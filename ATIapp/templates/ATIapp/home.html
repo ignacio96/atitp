@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>App clima</title>
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      #main{
+        text-align:center;
+        padding-top:100px;
+
+      }
+      input[type='text']{
+        width:30%;
+        padding: 10px;
+        border: 2px solid black;
+        margin-bottom: 5px;
+        margin-top: 10px;
+      }
+      input[type='submit']{
+        width:30%;
+        padding: 10px;
+        border: 2px solid black;
+        cursor:pointer;
+        text-transform: uppercase;
+      }
+      form{
+
+      }
+    </style>
+  </head>
+  <body>
+    <div class="" id="main">
+      <h1>Encontrar el Clima</h1>
+
+      <form class="" method="GET">
+        <label for="ciudad"></label>
+        <input type="text" name="ciudad" id="ciudad" value="{{request.GET.ciudad}}" placeholder="seleccionar ciudad"><br>
+        <input type="submit"value="Buscar">
+      </form>
+      {% if clima %}
+        <h3>{{clima.region}}</h3>
+        <h3>{{clima.daytime}}</h3>
+        <h3>{{clima.estado}}</h3>
+        <h3>{{clima.temp}} ºC</h3>
+      {% endif %}
+    </div>
+
+  </body>
+</html>
