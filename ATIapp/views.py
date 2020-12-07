@@ -1,18 +1,7 @@
 from django.shortcuts import render
 #from django.shortcuts import HttpResponse
 # Create your views here.
-# def get_html_content():
-#     import requests
-#         USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64)"
-#         LANGUAGE = "en-US,en;q=0.5"
-#         session = requests.Session()
-#         session.headers['User-Agent'] = USER_AGENT
-#         session.headers['Accept-Language'] = LANGUAGE
-#         session.headers['Content-Language'] = LANGUAGE
-#         ciudad= ciudad.replace(' ','+')
-        # html_content = session.get(f'https://www.google.com/search?q=clima+en+{ciudad}')
-        # return html_content
-#def get_html_content(ciudad):
+
 def get_html_content(request):
     import requests
     ciudad = request.GET.get('ciudad')
