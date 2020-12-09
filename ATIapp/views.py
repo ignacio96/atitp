@@ -15,7 +15,7 @@ def get_html_content(request):
     session.headers['Accept-Language'] = LANGUAGE
     session.headers['Content-Language'] = LANGUAGE
     ciudad = ciudad.replace(" ", "+")
-    html_content = session.get(f'https://www.google.com/search?q=weather+{ciudad}').text
+    html_content = session.get(f'https://listado.mercadolibre.com.ar/+{ciudad}').text
     return html_content
 
 def home(request):
@@ -30,7 +30,7 @@ def home(request):
         info_clima= dict()
         info_clima['region'] = soup.find('div', attrs={'id': 'wob_loc'}).text
         info_clima['daytime']= soup.find('div', attrs={'id': 'wob_dts'}).text
-        info_clima['estado']= soup.find('span', attrs={'id': 'wob_dc'}).text
+        info_clima['estado']= soup.find('span', attrs={'id': 'price-tag-fraction'}).text
         info_clima['temp']= soup.find('span', attrs={'id': 'wob_tm'}).text
 
         # print(region)
