@@ -15,7 +15,7 @@ def get_html_content(request):
     session.headers['Accept-Language'] = LANGUAGE
     session.headers['Content-Language'] = LANGUAGE
     ciudad = ciudad.replace(" ", "+")
-    html_content = session.get(f'https://www.google.com/search?q=weather+{ciudad}').text
+    html_content = session.get(f'https://www.fravega.com/l/?keyword={ciudad}').text
     return html_content
 
 def home(request):
@@ -28,14 +28,27 @@ def home(request):
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(html_content, 'html.parser')
         info_clima= dict()
-        info_clima['region'] = soup.find('div', attrs={'id': 'wob_loc'}).text
-        info_clima['daytime']= soup.find('div', attrs={'id': 'wob_dts'}).text
-        info_clima['estado']= soup.find('span', attrs={'id': 'wob_dc'}).text
-        #info_clima['temp']= soup.find_all('span', attrs={'id': 'wob_t'}).text
-        #info_clima['temp']= soup.find('span', attrs={'class': 'wob_tm'}).text
-        info_clima['temp']='10'
-        result = soup.find_all(lambda tag: tag.name == 'span' and tag.get('class') == ['wob_t'])
+        info_clima['nombre'] = soup.find('h4', attrs={'class': 'PieceTitle-sc-1eg7yvt-0 akEoc'}).text
+        info_clima['precio']= soup.find('span', attrs={'class': 'ListPrice-sc-1nq6iaq-0 ezHsVN'}).text
+        info_clima['descuento']= soup.find('span', attrs={'class': 'Discount-sc-51o9d0-0 jVGWkx'}).text
+        info_clima['temp']= soup.find('div', attrs={'class': 'ProductCard__Card-sc-1w5guu7-2 hlRWOw'}).find('a')['href']
+        info_clima['temp']= 'https://www.fravega.com'+info_clima['temp']
+        #info_clima['imagen']== soup.find('img', attrs={'class': 'PieceFigure__Img-sc-18uorlj-0 fUyGUS'}).text
+        # info_clima['temp']= soup.find('img', attrs={'class': 'PieceFigure__Img-sc-18uorlj-0 fUyGUS'}).text
+        # print(info_clima)
+        # image_tags = soup.findAll('img')
+        # # print out image urls
+        # for image_tag in image_tags:
+        #     print(image_tag.get('src'))
+        #print(info_clima['imagen'])
+        # import re
+        #for link in soup.find_all('a'):print(link.get('href'))# http://example.com/elsie# http://example.com/lacie# http://example.com/tillie
+        # pastebin_regex = re.compile(r"^https://www.fravega.com/[\w]+$")
 
-         #print(result)
+        # for link in soup.findAll('a', attrs={"href": pastebin_regex}):
+        #  print(link["href"])
+        #result = soup.find_all(lambda tag: tag.name == 'span' and tag.get('class') == ['wob_t'])
+        #result=soup.find('span', attrs={'class': 'wob_t'}).text
+        #print(result)
         # pass
-    return render(request, 'ATIapp/home.html',{'clima':info_clima,'resultado':result})
+    return render(request, 'ATIapp/home.html',{'clima':info_clima})

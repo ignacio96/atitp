@@ -35,7 +35,7 @@
   </head>
   <body>
     <div class="" id="main">
-      <h1>Encontrar el Clima</h1>
+      <h1>Buscar Producto</h1>
 
       <form class="" method="GET">
         <label for="ciudad"></label>
@@ -43,12 +43,13 @@
         <input type="submit"value="Buscar">
       </form>
       {% if clima %}
-        <h3>{{clima.region}}</h3>
-        <h3>{{clima.daytime}}</h3>
-        <h3>{{clima.estado}}</h3>
-        <h3>{{clima.temp}} ºC</h3>
+        <h3>Producto: {{clima.nombre}}</h3>
+        <h3>Precio: {{clima.precio}}</h3>
+        <h3>Descuento: %{{clima.descuento}}</h3>
+        <!--<h3>{{clima.temp}}</h3>-->
+      <!--  <META HTTP-EQUIV="REFRESH" CONTENT="5;URL={{clima.temp}}">-->
       {% endif %}
-      <h1>{%resultado%} </h1>
+
     </div>
 
   </body>
