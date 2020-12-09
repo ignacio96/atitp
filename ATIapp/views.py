@@ -35,6 +35,6 @@ def home(request):
         info_clima['temp']= soup.find('span', attrs={'class': 'wob_tm'}).text
         result = soup.find_all(lambda tag: tag.name == 'span' and
                                    tag.get('class') == ['wob_t'])
-         print(result)
+         #print(result)
         # pass
     return render(request, 'ATIapp/home.html',{'clima':info_clima})
