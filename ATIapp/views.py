@@ -31,7 +31,7 @@ def home(request):
         info_clima['region'] = soup.find('div', attrs={'id': 'wob_loc'}).text
         info_clima['daytime']= soup.find('div', attrs={'id': 'wob_dts'}).text
         info_clima['estado']= soup.find('span', attrs={'id': 'wob_dc'}).text
-        info_clima['temp']= soup.find('span', attrs={'id': 'wob_t'}).select("vk_gy gNCp2e")[1]
+        info_clima['temp']= soup.find_all('span', attrs={'id': 'wob_t'}).text
 
         # print(region)
         # pass
