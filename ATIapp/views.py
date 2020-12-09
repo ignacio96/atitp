@@ -33,7 +33,7 @@ def home(request):
         info_clima['estado']= soup.find('span', attrs={'id': 'wob_dc'}).text
         #info_clima['temp']= soup.find_all('span', attrs={'id': 'wob_t'}).text
         #info_clima['temp']= soup.find_all('span', attrs={'id': 'wob_t'}).text
-        region= soup.find_all(lambda tag: tag.name == 'span' and tag.get('id') == ['wob_t'])
+        region= soup.find_all(lambda tag: tag.name == 'span' and tag.get('class') == ['wob_t'])
          print(region)
         # pass
     return render(request, 'ATIapp/home.html',{'clima':info_clima})
