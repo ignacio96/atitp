@@ -38,4 +38,4 @@ def home(request):
 
          #print(result)
         # pass
-    return render(request, 'ATIapp/home.html',{'clima':info_clima})
+    return render(request, 'ATIapp/home.html',{'clima':info_clima,'resultado':result})
