@@ -26,7 +26,8 @@ SECRET_KEY = 'wqsby5aj3khg_(g-yy@#)&2dl*067dsf-cfw@y7(hh@f(*4u_s'
 DEBUG = True
 
 ALLOWED_HOSTS = ['atitp.herokuapp.com',
-                '127.0.0.1:8000']
+                '127.0.0.1:8000',
+                '127.0.0.1']
 
 
 # Application definition
