@@ -38,16 +38,19 @@
       <h1>Buscar Producto</h1>
 
       <form class="" method="GET">
-        <label for="ciudad"></label>
-        <input type="text" name="ciudad" id="ciudad" value="{{request.GET.ciudad}}" placeholder="seleccionar ciudad"><br>
+        <label for="producto"></label>
+        <input type="text" name="productos" id="productos" value="{{request.GET.productos}}" placeholder="seleccionar Producto"><br>
         <input type="submit"value="Buscar">
       </form>
-      {% if clima %}
-        <h3>Producto: {{clima.nombre}}</h3>
-        <h3>Precio: {{clima.precio}}</h3>
-        <h3>Descuento: %{{clima.descuento}}</h3>
-        <!--<h3>{{clima.temp}}</h3>-->
-      <!--  <META HTTP-EQUIV="REFRESH" CONTENT="5;URL={{clima.temp}}">-->
+      {% if fravega %}
+        <h3>Producto: {{fravega.nombre}}</h3>
+        <h3>Precio Lista: {{fravega.plista}}</h3>
+        <h3>Descuento: %{{fravega.descuento}}</h3>
+        <h3>Precio c/descuento: {{fravega.precio}}</h3>
+        <a href="https://www.fravega.com{{fravega.link}}" target="_blank">Link al producto</a>
+        <h3>
+            <img src={{fravega.imagen}}>
+         </h3>
       {% endif %}
 
     </div>
