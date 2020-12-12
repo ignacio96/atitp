@@ -31,7 +31,7 @@ def home(request):
         link=soup.find('div', attrs={'class': 'ProductCard__Card-sc-1w5guu7-2 hlRWOw'}).find('a')['href']
         info_fravega['link']=link
         imagen=soup.find_all('img')
-        #ejemplo = imagen[0]
+        
         info_fravega['imagen']=imagen[0].attrs['src']
 
     return render(request, 'ATIapp/home.html',{'fravega':info_fravega})
