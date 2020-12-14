@@ -39,18 +39,42 @@
 
       <form class="" method="GET">
         <label for="producto"></label>
-        <input type="text" name="productos" id="productos" value="{{request.GET.productos}}" placeholder="seleccionar Producto"><br>
+        <input type="text" name="producto" id="producto" value="{{request.GET.producto}}" placeholder="seleccionar Producto"><br>
         <input type="submit"value="Buscar">
       </form>
-      {% if fravega %}
+      {% if fravega.nombre %}
         <h3>Producto: {{fravega.nombre}}</h3>
-        <h3>Precio Lista: {{fravega.plista}}</h3>
-        <h3>Descuento: %{{fravega.descuento}}</h3>
-        <h3>Precio c/descuento: {{fravega.precio}}</h3>
+
+        {% if fravega.descuento %}
+          <h3>Descuento: %{{fravega.descuento}}</h3>
+          <h3>Precio Lista: {{fravega.plista}}</h3>
+        {%endif%}
+
+        <h3>Precio: {{fravega.precio}}</h3>
+
         <a href="https://www.fravega.com{{fravega.link}}" target="_blank">Link al producto</a>
         <h3>
             <img src={{fravega.imagen}}>
          </h3>
+      {% else %}
+          <h3> no se encontro el producto</h3>
+      {% endif %}
+      {% if garbarino.nombre %}
+        <h3>Producto: {{garbarino.nombre}}</h3>
+        <!--tuve que agregar este if porque grabarino cambia el nombre de la clase cuando hay precio con descuento-->
+        {% if garbarino.descuento%}
+          <h3>Precio Lista: {{garbarino.preciolista}}</h3>
+          <h3>Descuento: {{garbarino.descuento}}</h3>
+          <h3>Precio c/descuento: {{garbarino.precio}}</h3>
+        {% else %}
+          <h3>Precio: {{garbarino.precio}}</h3>
+        {% endif %}
+        <a href="https://www.garbarino.com{{garbarino.link}}" target="_blank">Link al producto</a>
+        <h3>
+            <img src={{garbarino.imagen}}>
+         </h3>
+      {% else %}
+         <h3> no se encontro el producto</h3>
       {% endif %}
 
     </div>
