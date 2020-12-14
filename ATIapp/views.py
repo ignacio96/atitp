@@ -30,8 +30,7 @@ def home(request):
         info_fravega['descuento']= soup.find('span', attrs={'class': 'Discount-sc-51o9d0-0 jVGWkx'}).text
         link=soup.find('div', attrs={'class': 'ProductCard__Card-sc-1w5guu7-2 hlRWOw'}).find('a')['href']
         info_fravega['link']=link
-        imagen=soup.find_all('img')
-        #ejemplo = imagen[0]
+        imagen=soup.find_all('img')        
         info_fravega['imagen']=imagen[0].attrs['src']
 
     return render(request, 'ATIapp/home.html',{'fravega':info_fravega})
