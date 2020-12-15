@@ -2,6 +2,7 @@ from django.shortcuts import render
 #from django.shortcuts import HttpResponse
 # Create your views here.
 
+
 def get_html_content(request):
     import requests
     producto = request.GET.get('producto')

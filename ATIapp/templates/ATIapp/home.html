@@ -32,52 +32,69 @@
 
       }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
   </head>
   <body>
-    <div class="" id="main">
+    <div class="align:center" id="main">
       <h1>Buscar Producto</h1>
 
       <form class="" method="GET">
-        <label for="producto"></label>
+
         <input type="text" name="producto" id="producto" value="{{request.GET.producto}}" placeholder="seleccionar Producto"><br>
         <input type="submit"value="Buscar">
-      </form>
-      {% if fravega.nombre %}
-        <h3>Producto: {{fravega.nombre}}</h3>
 
-        {% if fravega.descuento %}
-          <h3>Descuento: %{{fravega.descuento}}</h3>
-          <h3>Precio Lista: {{fravega.plista}}</h3>
-        {%endif%}
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-sm-4">
+                  <h3><b>Fravega</b></h3>
+                  {% if fravega.nombre %}
+                  <h3>
+                    <a href="https://www.fravega.com{{fravega.link}}" target="_blank">
+                      <img src={{fravega.imagen}}>
+                    </a>
+                   </h3>
+                    <h3>{{fravega.nombre}}</h3>
 
-        <h3>Precio: {{fravega.precio}}</h3>
+                    {% if fravega.descuento %}
+                      <h3>Precio Lista:<strike>{{fravega.plista}}</strike></h3>
+                      <h3>Descuento: {{fravega.descuento}}% OFF</h3>
+                    {%endif%}
+                    <h3>Precio: {{fravega.precio}}</h3>
 
-        <a href="https://www.fravega.com{{fravega.link}}" target="_blank">Link al producto</a>
-        <h3>
-            <img src={{fravega.imagen}}>
-         </h3>
-      {% else %}
-          <h3> no se encontro el producto</h3>
-      {% endif %}
-      {% if garbarino.nombre %}
-        <h3>Producto: {{garbarino.nombre}}</h3>
-        <!--tuve que agregar este if porque grabarino cambia el nombre de la clase cuando hay precio con descuento-->
-        {% if garbarino.descuento%}
-          <h3>Precio Lista: {{garbarino.preciolista}}</h3>
-          <h3>Descuento: {{garbarino.descuento}}</h3>
-          <h3>Precio c/descuento: {{garbarino.precio}}</h3>
-        {% else %}
-          <h3>Precio: {{garbarino.precio}}</h3>
-        {% endif %}
-        <a href="https://www.garbarino.com{{garbarino.link}}" target="_blank">Link al producto</a>
-        <h3>
-            <img src={{garbarino.imagen}}>
-         </h3>
-      {% else %}
-         <h3> no se encontro el producto</h3>
-      {% endif %}
+                    <a href="https://www.fravega.com{{fravega.link}}" target="_blank">Link al producto</a>
 
-    </div>
+                  {% else %}
+                      <h3> no se encontro el producto</h3>
+                  {% endif %}
+                </div>
+                <div class="col-sm-4">
+                  <h3><b> Garbarino</b></h3>
+                  {% if garbarino.nombre %}
+                    <h3>
+                      <a href="https://www.garbarino.com{{garbarino.link}}" target="_blank">
+                        <img src={{garbarino.imagen}}>
+                      </a>
+                   </h3>
+                    <h3>{{garbarino.nombre}}</h3>
+                    <!--tuve que agregar este if porque grabarino cambia el nombre de la clase cuando hay precio con descuento-->
+                    {% if garbarino.descuento%}
+                      <h3>Precio Lista:<strike>{{garbarino.preciolista}}</strike></h3>
+                      <h3>Descuento: {{garbarino.descuento}}</h3>
+                      <h3>Precio: {{garbarino.precio}}</h3>
+                    {% else %}
+                      <h3>Precio: {{garbarino.precio}}</h3>
+                    {% endif %}
+                    <a href="https://www.garbarino.com{{garbarino.link}}" target="_blank">Link al producto</a>
 
+                  {% else %}
+                     <h3> no se encontro el producto</h3>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
   </body>
 </html>
