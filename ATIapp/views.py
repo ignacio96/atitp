@@ -1,7 +1,14 @@
 from django.shortcuts import render
 #from django.shortcuts import HttpResponse
 # Create your views here.
+import operator
 
+def is_float(value):
+  try:
+    float(value)
+    return True
+  except:
+    return False
 
 def get_html_content(request):
     import requests
@@ -14,6 +21,7 @@ def get_html_content(request):
     session.headers['Content-Language'] = LANGUAGE
     producto = producto.replace(" ", "+")
     webfravega = session.get(f'https://www.fravega.com/l/?keyword={producto}&sorting=LOWEST_SALE_PRICE').text
+    # webfravega = session.get(f'https://www.fravega.com/l/?keyword={producto}').text
     webgarbarino = session.get(f'https://www.garbarino.com/q/{producto}/srch?sort_by=price_asc&q={producto}').text
     html_content = webfravega+webgarbarino
     #print(html_content)
@@ -28,7 +36,36 @@ def home(request):
 
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(html_content, 'html.parser')
+        if soup.find('ul',attrs={'class':'listingDesktopstyled__SearchResultList-wzwlr8-6 fCKkuk'}):
+            data1 = soup.find('ul',attrs={'class':'listingDesktopstyled__SearchResultList-wzwlr8-6 fCKkuk'})
+            data2=data1.find_all('div',attrs={'class':'ProductCard__Card-sc-1w5guu7-2 hlRWOw'})
+            resultadoFravega=[]
+            for div in data2:
+                link=div.a.get('href')
+                nombre=div.a.article.div.h4.text
+                # precio=div.a.article.div.span.text
+                precio= div.a.article.div.find('span',attrs={'class':'SalePrice-sc-17gadvb-0 egaLpU'}).text
+                # ver si es necesario ahcer reemplazo de "." por " " apra poder erdenar por precio
+                x=(precio.split(' ')[1]).replace(".", "")
+                x=float(x.replace(",","."))
+                print(x)
+
+                imagen=div.a.article.figure.img.get('src')
+                resultadoFravega.append({'precio':x,'link':link , 'nombre':nombre, 'imagen':imagen})
+            # print(resultadoFravega)
+
+            # for elem in resultadoFravega:      #accedemos a cada elemento de la lista (en este caso cada elemento es un dictionario)
+            #     for k,v in elem.items():        #acedemos a cada llave(k), valor(v) de cada diccionario
+            #         print(k, v)
+            newlist = sorted(resultadoFravega, key=lambda k: k['precio'])
+            print(newlist)
+        # para traerme el nombre
         info_fravega= dict()
+
+        info=newlist[0]
+
+        info_fravega['nombre'] =info['nombre']
+        print(info_fravega['nombre'])
 
         if soup.find('div',attrs={'class':'PiecePricing__PiecePriceWrapper-acjwpt-0 jSabjj'}):
             #para tener los diferentes span de los precios
@@ -37,11 +74,11 @@ def home(request):
             var2= soup.find('div',attrs={'class':'ProductCard__Card-sc-1w5guu7-2 hlRWOw'})
 
 
-            if var2.findAll('h4',{'class':['PieceTitle-sc-1eg7yvt-0 akEoc']}):
-                info_fravega['nombre'] = soup.find('h4', attrs={'class': 'PieceTitle-sc-1eg7yvt-0 akEoc'}).text
-                # print('entro')
-            else:
-                info_fravega['nombre'] =''
+            # if var2.findAll('h4',{'class':['PieceTitle-sc-1eg7yvt-0 akEoc']}):
+            #     info_fravega['nombre'] = soup.find('h4', attrs={'class': 'PieceTitle-sc-1eg7yvt-0 akEoc'}).text
+            #     # print('entro')
+            # else:
+            #     info_fravega['nombre'] =''
                 # print('no entro')
             if var.findAll("span",{"class":['ListPrice-sc-1nq6iaq-0 ezHsVN']}):
                 info_fravega['plista'] = soup.find('span',attrs={'ListPrice-sc-1nq6iaq-0 ezHsVN'}).text
