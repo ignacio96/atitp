@@ -27,6 +27,11 @@ def get_html_content(request):
     #print(html_content)
     return html_content
 
+def recorrer_listado(listado,nombre):
+
+
+    return diccionario
+
 def home(request):
     info_garbarino = None
     info_fravega = None
@@ -66,6 +71,9 @@ def home(request):
 
         info_fravega['nombre'] =info['nombre']
         print(info_fravega['nombre'])
+
+        fravegadic=dict()
+        fravegadic = recorrer_listado(newlist,producto)
 
         if soup.find('div',attrs={'class':'PiecePricing__PiecePriceWrapper-acjwpt-0 jSabjj'}):
             #para tener los diferentes span de los precios
