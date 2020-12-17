@@ -29,6 +29,8 @@ def get_html_content(request):
     webfravega = session.get(f'https://www.fravega.com/l/?keyword={producto}&sorting=LOWEST_SALE_PRICE').text
     # webfravega = session.get(f'https://www.fravega.com/l/?keyword={producto}').text
     webgarbarino = session.get(f'https://www.garbarino.com/q/{producto}/srch?sort_by=price_asc&q={producto}').text
+    # webgarbarino = session.get(f'https://www.garbarino.com/q/{producto}/srch?q={producto}').text
+
     html_content = webfravega+webgarbarino
     #print(html_content)
     return html_content
@@ -99,25 +101,44 @@ def home(request):
 
 
 
-        if  soup.find('div', attrs={'class':'itemBox'}):
+        if  soup.find('div', attrs={'class':'col-xs-7 col-sm-9 col-md-10'}):
+
             info_garbarino=dict()
-            var2=soup.find('div', attrs={'class':'itemBox--info'})
-            var3=soup.find('div', attrs={'class':'itemBox--carousel'})
-            # variable=soup.find_all('div', attrs={'class':'col-xs-12 col-sm-4 col-md-3'}).text
+            var1=soup.find('div', attrs={'class':'row itemList'})
+            var2=var1.find_all('div',attrs={'class':'col-xs-12 col-sm-4 col-md-3'})
+            resultadoGarbarino=[]
+            # print(var2)
+            for div in var2:
+                link=div.a.get('href')
+                nombre=div.div.h3.text
+                imagen=div.a.img.get('src')
 
-            info_garbarino['nombre']=soup.find('h3', attrs={'itemprop': 'name'}).text
+                precio=div.find('div',attrs={'class':'itemBox--price'})
+                precio2=precio.find('meta',attrs={'itemprop':'price'}).get('content')
+                x=float(precio2)
 
-            info_garbarino['precio']=soup.find('span',attrs={'class':'value-item'}).text
+                resultadoGarbarino.append({'precio':x,'link':link , 'nombre':nombre, 'imagen':imagen})
+            # print(resultadoGarbarino)
 
-            link=var2.find('a')['href']
-            info_garbarino['link']=link
-            if var2.find('del'):
-                info_garbarino['preciolista']=var2.find('del').text
-                info_garbarino['descuento']=var2.find('span',attrs={'class':'value-item--discount'}).text
-            else:
-                info_garbarino['preciolista']=''
-            imagen=var3.find_all('img')
-            info_garbarino['imagen']=imagen[0].attrs['src']
+            newlist2 = sorted(resultadoGarbarino, key=lambda k: k['precio'])
+            info_garbarino=dict()
+            info_garbarino = recorrer_listado(newlist2,producto)
+            # var3=soup.find('div', attrs={'class':'itemBox--carousel'})
+            # # variable=soup.find_all('div', attrs={'class':'col-xs-12 col-sm-4 col-md-3'}).text
+            #
+            # info_garbarino['nombre']=soup.find('h3', attrs={'itemprop': 'name'}).text
+            #
+            # info_garbarino['precio']=soup.find('span',attrs={'class':'value-item'}).text
+            #
+            # link=var2.find('a')['href']
+            # info_garbarino['link']=link
+            # if var2.find('del'):
+            #     info_garbarino['preciolista']=var2.find('del').text
+            #     info_garbarino['descuento']=var2.find('span',attrs={'class':'value-item--discount'}).text
+            # else:
+            #     info_garbarino['preciolista']=''
+            # imagen=var3.find_all('img')
+            # info_garbarino['imagen']=imagen[0].attrs['src']
 
         else:
             print('no existe item')
