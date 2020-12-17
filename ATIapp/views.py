@@ -61,15 +61,19 @@ def home(request):
     info_fravega = None
     if 'producto' in request.GET:
         producto=nom_prod(request)
-        # print(producto)
+        print(producto)
+
         html_content=get_html_content(request)
 
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(html_content, 'html.parser')
+
         if soup.find('ul',attrs={'class':'listingDesktopstyled__SearchResultList-wzwlr8-6 fCKkuk'}):
             data1 = soup.find('ul',attrs={'class':'listingDesktopstyled__SearchResultList-wzwlr8-6 fCKkuk'})
+            print(data1)
             data2=data1.find_all('div',attrs={'class':'ProductCard__Card-sc-1w5guu7-2 hlRWOw'})
             resultadoFravega=[]
+            print('entro al primer if')
             for div in data2:
                 link=div.a.get('href')
                 nombre=div.a.article.div.h4.text
@@ -88,13 +92,15 @@ def home(request):
             #     for k,v in elem.items():        #acedemos a cada llave(k), valor(v) de cada diccionario
             #         print(k, v)
             newlist = sorted(resultadoFravega, key=lambda k: k['precio'])
-            # print(newlist)
+            
         # para traerme el nombre
-        info_fravega= dict()
+            info_fravega= dict()
 
         # info=newlist[0]
 
-        info_fravega = recorrer_listado(newlist,producto)
+            info_fravega = recorrer_listado(newlist,producto)
+        else:
+            print('no existe item')
         # ver que pasa si info_fravega esta vacio
         # if info_fravega = none
 
