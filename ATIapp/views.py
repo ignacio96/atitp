@@ -3,12 +3,18 @@ from django.shortcuts import render
 # Create your views here.
 import operator
 
+
 def is_float(value):
   try:
     float(value)
     return True
   except:
     return False
+
+def nom_prod(request):
+    import requests
+    producto = request.GET.get('producto')
+    return producto
 
 def get_html_content(request):
     import requests
@@ -27,16 +33,33 @@ def get_html_content(request):
     #print(html_content)
     return html_content
 
+def prod(request):
+    import requests
+    producto = request.GET.get('producto')
+    return producto
+
 def recorrer_listado(listado,nombre):
-
-
+    diccionario =dict()
+    sin_encontrar = True
+    # print(sin_encontrar)
+    # Codigo que devuelve diccionario
+    for elem in listado:     #accedemos a cada elemento de la lista (en este caso cada elemento es un dictionario)
+         for k,v in elem.items():
+            # print(k)
+            # print(v)      #acedemos a cada llave(k), valor(v) de cada diccionario
+            if k == 'nombre' :
+                if nombre.lower() in v.lower() and sin_encontrar == True:
+                    diccionario = elem
+                    sin_encontrar = False
     return diccionario
+
 
 def home(request):
     info_garbarino = None
     info_fravega = None
     if 'producto' in request.GET:
-
+        producto=nom_prod(request)
+        # print(producto)
         html_content=get_html_content(request)
 
         from bs4 import BeautifulSoup
@@ -53,7 +76,7 @@ def home(request):
                 # ver si es necesario ahcer reemplazo de "." por " " apra poder erdenar por precio
                 x=(precio.split(' ')[1]).replace(".", "")
                 x=float(x.replace(",","."))
-                print(x)
+                # print(x)
 
                 imagen=div.a.article.figure.img.get('src')
                 resultadoFravega.append({'precio':x,'link':link , 'nombre':nombre, 'imagen':imagen})
@@ -63,80 +86,24 @@ def home(request):
             #     for k,v in elem.items():        #acedemos a cada llave(k), valor(v) de cada diccionario
             #         print(k, v)
             newlist = sorted(resultadoFravega, key=lambda k: k['precio'])
-            print(newlist)
+            # print(newlist)
         # para traerme el nombre
         info_fravega= dict()
 
-        info=newlist[0]
+        # info=newlist[0]
 
-        info_fravega['nombre'] =info['nombre']
-        print(info_fravega['nombre'])
-
-        fravegadic=dict()
-        fravegadic = recorrer_listado(newlist,producto)
-
-        if soup.find('div',attrs={'class':'PiecePricing__PiecePriceWrapper-acjwpt-0 jSabjj'}):
-            #para tener los diferentes span de los precios
-            var = soup.find('div',attrs={'class':'PiecePricing__PiecePriceWrapper-acjwpt-0 jSabjj'})
-
-            var2= soup.find('div',attrs={'class':'ProductCard__Card-sc-1w5guu7-2 hlRWOw'})
-
-
-            # if var2.findAll('h4',{'class':['PieceTitle-sc-1eg7yvt-0 akEoc']}):
-            #     info_fravega['nombre'] = soup.find('h4', attrs={'class': 'PieceTitle-sc-1eg7yvt-0 akEoc'}).text
-            #     # print('entro')
-            # else:
-            #     info_fravega['nombre'] =''
-                # print('no entro')
-            if var.findAll("span",{"class":['ListPrice-sc-1nq6iaq-0 ezHsVN']}):
-                info_fravega['plista'] = soup.find('span',attrs={'ListPrice-sc-1nq6iaq-0 ezHsVN'}).text
-            else:
-                info_fravega['plista'] =''
-
-            if var.findAll("span",{"class":['SalePrice-sc-17gadvb-0 egaLpU']}):
-                info_fravega['precio']= soup.find('span', attrs={'class': 'SalePrice-sc-17gadvb-0 egaLpU'}).text
-            else:
-                info_fravega['precio'] = ""
-
-            if var.findAll("span",{'class': 'Discount-sc-51o9d0-0 jVGWkx'}):
-                info_fravega['descuento']= soup.find('span', attrs={'class': 'Discount-sc-51o9d0-0 jVGWkx'}).text
-            else:
-                info_fravega['descuento'] = ""
-            link=soup.find('div', attrs={'class': 'ProductCard__Card-sc-1w5guu7-2 hlRWOw'}).find('a')['href']
-            # link2=soup.find('div', attrs={'class': 'itemBox--features'}).find('a')['href']
-            info_fravega['link']=link
-
-
-            imagen=soup.find_all('img')
-            info_fravega['imagen']=imagen[0].attrs['src']
-
-        #variable=soup.find('span', attrs={'class': 'otra'}).text
-        #print(variable)
-        # if tag_link = soup.find('span', attrs={'class': 'otra'}).text:
-        #     print(tag_link)
-        # else:
-        #     print("there is no class of 'Label' or no attribute of 'href'! ")
-        # if soup.find('span', attrs={'class': 'otra'}).text :
-        #    javascript = "bien"
-        # # Otherwise assume that the javascript is contained within the tags
-        # else:
-        #    javascript = "mal"
-        # print(javascript)
-
-
-        # link=soup.find('div', attrs={'class': 'img-container main slick-slide slick-current slick-active'}).find('a')['href']
-        # link=soup.find('div', attrs={'class': 'itemBox--features'}).find('a')['href']
+        info_fravega = recorrer_listado(newlist,producto)
+        # ver que pasa si info_fravega esta vacio
+        # if info_fravega = none
 
 
 
-        #info_garbarino['precio']= soup.find('span', attrs={'id': 'price-e81cb65a86'}).text
-        else:
-            print('no existe item')
 
         if  soup.find('div', attrs={'class':'itemBox'}):
             info_garbarino=dict()
             var2=soup.find('div', attrs={'class':'itemBox--info'})
             var3=soup.find('div', attrs={'class':'itemBox--carousel'})
+            # variable=soup.find_all('div', attrs={'class':'col-xs-12 col-sm-4 col-md-3'}).text
 
             info_garbarino['nombre']=soup.find('h3', attrs={'itemprop': 'name'}).text
 
